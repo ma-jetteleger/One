@@ -28,8 +28,8 @@ public class Entity : MonoBehaviour
 
 	public Level Level { get; set; }
 
-	protected Track CurrentTrack;
-	protected Node CurrentNode;
+	public Track CurrentTrack;
+	public Node CurrentNode;
 
 	[Button("Position")]
 	public virtual void Initialize()

@@ -42,6 +42,7 @@ public class TrackManager : MonoBehaviour
 			levels[i].Initialize();
 		}
 
+		EntityManager.Instance.Player.Levels = levels;
 		EntityManager.Instance.Player.Initialize();
 	}
 

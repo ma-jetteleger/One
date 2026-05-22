@@ -7,18 +7,18 @@ using UnityEngine.UI;
 
 public class Player : Entity
 {
-	public const string kSavedTrackId = "SavedTrackId";
+	//public const string kSavedTrackId = "SavedTrackId";
 
-	[SerializeField] private int _startTrackId = 0;
+	//[SerializeField] private int _startTrackId = 0;
 	[SerializeField] private Vector3 _initialCameraOffset = Vector3.zero;
 	[SerializeField] private float _initialCameraSize = 0f;
 	[SerializeField] private Text _titleText = null;
-	[SerializeField] private Button _hudButton = null;
-	[SerializeField] private Button _backButton = null;
-	[SerializeField] private Button _restartButton = null;
-	[SerializeField] private Button _clearButton = null;
-	[SerializeField] private CanvasGroup _resetPanel = null;
-	[SerializeField] private LineRenderer _erasableTrack = null;
+	//[SerializeField] private Button _hudButton = null;
+	//[SerializeField] private Button _backButton = null;
+	//[SerializeField] private Button _restartButton = null;
+	//[SerializeField] private Button _clearButton = null;
+	//[SerializeField] private CanvasGroup _resetPanel = null;
+	//[SerializeField] private LineRenderer _erasableTrack = null;
 	[SerializeField] private float _cameraFollowSpeed = 0f;
 	[SerializeField] private float _outOfTrackFocusSize = 0f;
 	[SerializeField] private float _accelerationFactor = 0f;
@@ -27,8 +27,10 @@ public class Player : Entity
 	[SerializeField] private float _spawnTime = 0f;
 
 	public Enemy Companion { get; set; }
+	public bool Started { get; set; }
+	public Level[] Levels { get; set; }
 
-	private int SavedTrackId
+	/*private int SavedTrackId
 	{
 		get
 		{
@@ -44,16 +46,16 @@ public class Player : Entity
 			_savedTrackId = value;
 			PlayerPrefs.SetInt(kSavedTrackId, _savedTrackId);
 		}
-	}
+	}*/
 
-	private bool IsPointerOverUIObject()
+	/*private bool IsPointerOverUIObject()
 	{
 		PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
 		eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
 		List<RaycastResult> results = new List<RaycastResult>();
 		EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
 		return results.Count > 0;
-	}
+	}*/
 
 	private float _moveValueModifier;
 	private float? _startProgressiveZoom;
@@ -61,14 +63,13 @@ public class Player : Entity
 	private Vector3? _startProgressivePlayerPosition;
 	private float? _progressiveZoomTotalDistance;
 	private bool _dead;
-	private bool _started;
-	private int _savedTrackId;
+	//private int _savedTrackId;
 	
 	public override void Initialize()
 	{
 		_dead = true;
 
-		if (_startTrackId > -1)
+		/*if (_startTrackId > -1)
 		{
 			SavedTrackId = _startTrackId;
 		}
@@ -81,7 +82,7 @@ public class Player : Entity
 			{
 				TrackManager.PlayerTracks[SavedTrackId - 1].Level.gameObject.SetActive(true);
 			}
-		}
+		}*/
 
 		base.Initialize();
 		
@@ -101,16 +102,16 @@ public class Player : Entity
 		Camera.main.transform.position = transform.position + _initialCameraOffset;
 		Camera.main.orthographicSize = _initialCameraSize;
 
-		_resetPanel.DOFade(0f, 0f);
-		_resetPanel.interactable = false;
-		_resetPanel.blocksRaycasts = false;
+		//_resetPanel.DOFade(0f, 0f);
+		//_resetPanel.interactable = false;
+		//_resetPanel.blocksRaycasts = false;
 
 		_titleText.DOFade(1f, 0f);
 
-		ToggleButton(_clearButton, SavedTrackId > 0, 0, _spawnCurve);
-		ToggleButton(_hudButton, false, 0, _spawnCurve);
-		ToggleButton(_backButton, false, 0, _spawnCurve);
-		ToggleButton(_restartButton, false, 0, _spawnCurve);
+		//ToggleButton(_clearButton, SavedTrackId > 0, 0, _spawnCurve);
+		//ToggleButton(_hudButton, false, 0, _spawnCurve);
+		//ToggleButton(_backButton, false, 0, _spawnCurve);
+		//ToggleButton(_restartButton, false, 0, _spawnCurve);
 	}
 
 	private void Update()
@@ -122,30 +123,30 @@ public class Player : Entity
 
 		if (_dead)
 		{
-			if(!_started && Input.GetMouseButton(0) && !IsPointerOverUIObject())
+			if(!Started && (Input.GetKey(KeyCode.Space) || (Input.GetMouseButton(0))/* && !IsPointerOverUIObject()*/))
 			{
 				_dead = false;
-				_started = true;
+				Started = true;
 
 				CurrentTrack?.Level.Focus(true);
 
 				_titleText.DOFade(0f, DeathTime).SetEase(DeathCurve);
 				
-				ToggleButton(_clearButton, false, DeathTime, DeathCurve);
+				/*ToggleButton(_clearButton, false, DeathTime, DeathCurve);
 				ToggleButton(_hudButton, true, DeathTime, DeathCurve);
 				ToggleButton(_restartButton, false, DeathTime, DeathCurve);
-				ToggleButton(_backButton, false, DeathTime, DeathCurve);
+				ToggleButton(_backButton, false, DeathTime, DeathCurve);*/
 			}
 
 			return;
 		}
 
-		if(_hudButton.image.color.a < 1f && Input.GetMouseButton(0) && !IsPointerOverUIObject())
+		/*if(_hudButton.image.color.a < 1f && Input.GetMouseButton(0) && !IsPointerOverUIObject())
 		{
 			ToggleButton(_hudButton, true, DeathTime, DeathCurve);
 			ToggleButton(_restartButton, false, DeathTime, DeathCurve);
 			ToggleButton(_backButton, false, DeathTime, DeathCurve);
-		}
+		}*/
 
 		/*if (Input.GetKeyDown(KeyCode.RightArrow))
 		{
@@ -170,7 +171,7 @@ public class Player : Entity
 			Camera.main.transform.position = cameraDestination;
 		}*/
 
-		if ((Input.GetKey(KeyCode.Space) || (Input.GetMouseButton(0) && !IsPointerOverUIObject())) && _moveValueModifier <= 1f)
+		if ((Input.GetKey(KeyCode.Space) || (Input.GetMouseButton(0)/* && !IsPointerOverUIObject()*/)) && _moveValueModifier <= 1f)
 		{
 			_moveValueModifier += Time.deltaTime * _accelerationFactor;
 		}
@@ -209,7 +210,7 @@ public class Player : Entity
 			return;
 		}
 
-		if (CurrentTrack == null || CurrentTrack.Level.FocusOnPlayer)
+		if (Started && (CurrentTrack == null || CurrentTrack.Level.FocusOnPlayer))
 		{
 			var cameraDestination = transform.position;
 			cameraDestination.z = Camera.main.transform.position.z;
@@ -230,10 +231,10 @@ public class Player : Entity
 		{
 			var newTrackId = TrackManager.PlayerTracks.IndexOf(CurrentTrack) + 1;
 
-			if(newTrackId <= 29) // eww
+			/*if(newTrackId <= 29) // eww
 			{
 				SavedTrackId = newTrackId;
-			}
+			}*/
 		}
 
 		base.SetTrack(track);
@@ -284,8 +285,11 @@ public class Player : Entity
 
 		if(CurrentTrack == null)
 		{
-			var track = TrackManager.PlayerTracks[SavedTrackId - 1];
-			respawnNode = track.Nodes[track.Nodes.Length - 1];
+			SetTrack(TrackManager.PlayerTracks[0]);
+
+			respawnNode = CurrentTrack.Nodes[0];
+
+			//CurrentTrack.Level.ResetEntitiesAndTracks();
 		}
 		else
 		{
@@ -299,30 +303,46 @@ public class Player : Entity
 
 			transform.position = CurrentNode.transform.position;
 
-			if(backToTitle)
+			if (backToTitle)
 			{
-				Camera.main.transform.DOMove(transform.position + _initialCameraOffset, _spawnTime).SetEase(_spawnCurve);
-				DOTween.To(x => Camera.main.orthographicSize = x, Camera.main.orthographicSize, _initialCameraSize, _spawnTime).SetEase(_spawnCurve);
+				Started = false;
+
+				Camera.main.transform.position = new Vector3(-7f, 0f, -10f);
+
+				transform.DOScale(1f, _spawnTime).SetEase(_spawnCurve);
+
+				Camera.main.transform.DOMove(new Vector3(-7f, 0.5f, -10f), _spawnTime).SetEase(_spawnCurve);
 
 				_titleText.DOFade(1f, _spawnTime).SetEase(_spawnCurve);
 
-				ToggleButton(_clearButton, SavedTrackId > 0, _spawnTime, _spawnCurve);
+				for (var i = 0; i < Levels.Length; i++)
+				{
+					var level = Levels[i];
+
+					if(level.gameObject.name == "Level0" || level.gameObject.name == "Level1")
+					{
+						level.Activate();
+					}
+					else
+					{
+						level.Deactivate(true);
+					}
+				}
+
+				DOTween.To(x => Camera.main.orthographicSize = x, Camera.main.orthographicSize, _initialCameraSize, _spawnTime).SetEase(_spawnCurve);
+
+				/*ToggleButton(_clearButton, SavedTrackId > 0, _spawnTime, _spawnCurve);
 				ToggleButton(_hudButton, false, _spawnTime, _spawnCurve);
 				ToggleButton(_backButton, false, _spawnTime, _spawnCurve);
-				ToggleButton(_restartButton, false, _spawnTime, _spawnCurve);
+				ToggleButton(_restartButton, false, _spawnTime, _spawnCurve);*/
 			}
-
-			transform.DOScale(1f, _spawnTime).SetEase(_spawnCurve).OnComplete(() =>
+			else
 			{
-				if (backToTitle)
-				{
-					_started = false;
-				}
-				else
+				transform.DOScale(1f, _spawnTime).SetEase(_spawnCurve).OnComplete(() =>
 				{
 					_dead = false;
-				}
-			});
+				});
+			}
 		});
 	}
 
@@ -350,45 +370,45 @@ public class Player : Entity
 		}
 	}
 
-	private void ToggleButton(Button button, bool toggle, float time, AnimationCurve curve)
+	/*private void ToggleButton(Button button, bool toggle, float time, AnimationCurve curve)
 	{
 		button.image.DOFade(toggle ? 1f : 0f, time).SetEase(curve);
 		button.image.raycastTarget = toggle;
 		button.interactable = toggle;
-	}
+	}*/
 
-	public void UI_OpenHud()
+	/*public void UI_OpenHud()
 	{
 		ToggleButton(_hudButton, false, _spawnTime, _spawnCurve);
 		ToggleButton(_backButton, true, _spawnTime, _spawnCurve);
 		ToggleButton(_restartButton, true, _spawnTime, _spawnCurve);
-	}
+	}*/
 
 	public void UI_BackToTitle()
 	{
 		Die(true);
 	}
 
-	public void UI_RestartLevel()
+	/*public void UI_RestartLevel()
 	{
 		Die();
-	}
+	}*/
 
-	public void UI_OpenResetPanel()
+	/*public void UI_OpenResetPanel()
 	{
 		_resetPanel.DOFade(1f, _spawnTime).SetEase(_spawnCurve);
 		_resetPanel.interactable = true;
 		_resetPanel.blocksRaycasts = true;
-	}
+	}*/
 
-	public void UI_CloseResetPanel()
+	/*public void UI_CloseResetPanel()
 	{
 		_resetPanel.DOFade(0f, DeathTime).SetEase(DeathCurve);
 		_resetPanel.interactable = false;
 		_resetPanel.blocksRaycasts = false;
-	}
+	}*/
 
-	public void UI_ClearProgress()
+	/*public void UI_ClearProgress()
 	{
 		for (var i = 0; i < SavedTrackId + 2; i++)
 		{
@@ -418,5 +438,5 @@ public class Player : Entity
 		StartNode = null;
 
 		Initialize();
-	}
+	}*/
 }

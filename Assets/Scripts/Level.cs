@@ -61,16 +61,21 @@ public class Level : MonoBehaviour
 			_enemies = GetComponentsInChildren<Enemy>(true).Where(x => !x.Invincible).ToArray();
 			Companion = GetComponentsInChildren<Enemy>(true).FirstOrDefault(x => x.Invincible);
 
-			if (EntityManager.Instance.Player.Level != this)
-			{
-				Deactivate();
+			TryActivate();
+		}
+	}
 
-				gameObject.SetActive(false);
-			}
-			else
-			{
-				Activate();
-			}
+	public void TryActivate()
+	{
+		if (EntityManager.Instance.Player.Level != this)
+		{
+			Deactivate();
+
+			gameObject.SetActive(false);
+		}
+		else
+		{
+			Activate();
 		}
 	}
 
@@ -134,7 +139,7 @@ public class Level : MonoBehaviour
 		gameObject.SetActive(true);
 	}
 
-	public void Deactivate()
+	public void Deactivate(bool setInactive = false)
 	{
 		foreach (var enemy in _enemies)
 		{
@@ -142,6 +147,11 @@ public class Level : MonoBehaviour
 		}
 
 		Companion?.gameObject.SetActive(false);
+
+		if(setInactive)
+		{
+			gameObject.SetActive(false);
+		}
 	}
 
 	public void ResetEntitiesAndTracks(bool instant = false)
