@@ -1,0 +1,31 @@
+fileFormatVersion: 2
+guid: c5aef65479c88924386a56c83b38aec7
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Mission Gothic
+  fontNames:
+  - Mission Gothic
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 11820af26cb008249b1698ce2746b49c, type: 3}
+  - {fileID: 12800000, guid: 281eef05519b98949a1c4bdeeda60888, type: 3}
+  - {fileID: 12800000, guid: 5bc7f2a8faf599e498e84eca79a67715, type: 3}
+  - {fileID: 12800000, guid: 88d589191b0544d42a14eb4685735e1b, type: 3}
+  - {fileID: 12800000, guid: 8e207ffa1d602d1428b63946db74e936, type: 3}
+  - {fileID: 12800000, guid: 9befdf6b0507d4f479f11026c12e06cb, type: 3}
+  - {fileID: 12800000, guid: bf03530c61639a54c842e955aff49136, type: 3}
+  - {fileID: 12800000, guid: b732f33de4157a247910fcd3af6ecdd6, type: 3}
+  - {fileID: 12800000, guid: 1d16037f432b4264c965b8f244bd42cc, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
